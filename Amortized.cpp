@@ -41,38 +41,42 @@ namespace Amortized {
                     return 1;
                 }
             }
+
+            template<std::size_t size>
+            void printVector(const int(&vector)[size], 
+                            std::function<void(int, int, DinamicTable&)> printResult, 
+                            std::function<void(int, int, int)> printPartial = nullptr){
+
+                DinamicTable table;
+
+                int totalCost = 0;
+
+                for (size_t i = 0; i < count; i++){
+                    int cost;
+                    cost = table.insert(vector[i]);
+                    totalCost += cost;
+
+                    printPartial && printPartial(vector[i], table.size, cost);
+                }
+
+                printResult(totalCost, size, table);
+            }
     };
 }
+
+/*
+template<std::size_t N>
+int floats(const float(&r)[N]){
+    std::cout << N << ":";
+    for(size_t i = 0; i < N; i++)
+        std::cout << " " << r[i];
+    std::cout << std::endl;
+    return 0;
+}*/
+
 
 int main(){
     using Amortized::DinamicTable;
     using std::cout;
     using std::endl;
-
-    DinamicTable table;
-    int cost, element;
-
-    element = 32;
-    cost = table.insert(element);
-    cout<<"Elemento: "<<element<<"     Tamanho: "<<table.size<<"     Custo: "<<cost<<endl;
-
-    element = 2;
-    cost = table.insert(element);
-    cout<<"Elemento: "<<element<<"     Tamanho: "<<table.size<<"     Custo: "<<cost<<endl;
-
-    element = 3;
-    cost = table.insert(element);
-    cout<<"Elemento: "<<element<<"     Tamanho: "<<table.size<<"     Custo: "<<cost<<endl;
-
-    element = 4;
-    cost = table.insert(element);
-    cout<<"Elemento: "<<element<<"     Tamanho: "<<table.size<<"     Custo: "<<cost<<endl;
-
-    element = 5;
-    cost = table.insert(element);
-    cout<<"Elemento: "<<element<<"     Tamanho: "<<table.size<<"     Custo: "<<cost<<endl;
-
-    element = 6;
-    cost = table.insert(element);
-    cout<<"Elemento: "<<element<<"     Tamanho: "<<table.size<<"     Custo: "<<cost<<endl;
 }
