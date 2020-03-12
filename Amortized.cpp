@@ -44,39 +44,40 @@ namespace Amortized {
 
             template<std::size_t size>
             void printVector(const int(&vector)[size], 
-                            std::function<void(int, int, DinamicTable&)> printResult, 
-                            std::function<void(int, int, int)> printPartial = nullptr){
+                            std::function<void(float, float, DinamicTable&)> printResult, 
+                            std::function<void(int, int, int)> printPartial = 0){
 
                 DinamicTable table;
 
                 int totalCost = 0;
 
-                for (size_t i = 0; i < count; i++){
+                for (size_t i = 0; i < size; i++){
                     int cost;
                     cost = table.insert(vector[i]);
                     totalCost += cost;
 
-                    printPartial && printPartial(vector[i], table.size, cost);
+                    printPartial ?
+                    printPartial(vector[i], table.size, cost) :
+                    void();
                 }
 
-                printResult(totalCost, size, table);
+                printResult((float)totalCost, (float)size, table);
             }
     };
 }
-
-/*
-template<std::size_t N>
-int floats(const float(&r)[N]){
-    std::cout << N << ":";
-    for(size_t i = 0; i < N; i++)
-        std::cout << " " << r[i];
-    std::cout << std::endl;
-    return 0;
-}*/
-
 
 int main(){
     using Amortized::DinamicTable;
     using std::cout;
     using std::endl;
+
+    DinamicTable table;
+
+    table.printVector<6>({ 31, 5, 4, 3, 2, 1 }, [&](float custo, float elementos, DinamicTable tb){
+        cout<<custo<<endl;
+        cout<<elementos<<endl;
+        cout<<custo/elementos<<endl;
+    }, [&](int elemnt, int tableSize, int cost){
+        cout<<"Elemento "<<elemnt<<" Tamanho da tabela "<<tableSize<<" Custo "<<cost<<endl;
+    });
 }
