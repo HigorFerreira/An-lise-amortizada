@@ -1,5 +1,6 @@
 #include<iostream>
 #include<functional>
+#include<vector>
 
 
 namespace Amortized {
@@ -69,6 +70,46 @@ namespace Amortized {
     };
 
     class BinaryCounter{
+        std::vector<bool> *num = new std::vector<bool>;
+
+        void iterate(std::function<void(bool element, int index, std::vector<bool> *vector)> callback){
+            for (size_t i = 0; i < num->size(); i++){
+                callback(num->at(i), i, this->num);
+            }
+            
+        }
+
+        bool isFull(){
+            bool isFull = true;
+            this->iterate([&](bool element, int index, std::vector<bool> *vt){
+                isFull = element ? true : false;
+            });
+            return isFull;
+        }
+
+        int increment(){
+            int cost = 0;
+
+            if(num->size() == 0){
+                num->push_back(true);
+                return 1;
+            }
+            else{
+                if(this->isFull()){
+                    this->iterate([&](bool element, int index, std::vector<bool> *vt){
+                        vt->at(index) = false;
+                        cost++;
+                    });
+                    this->num->push_back(true);
+                    cost++;
+                    //Chamada recursiva
+                    return cost;
+                }
+                else{
+                    
+                }
+            }
+        }
     };
 }
 
@@ -77,17 +118,4 @@ int main(){
     using Amortized::BinaryCounter;
     using std::cout;
     using std::endl;
-    
-    DinamicTable table;
-
-    table.printVector<5>({ 1, 2, 3, 4, 5 }, [](float cost, float qtt, DinamicTable tb){
-        cout<<cost<<endl;
-        cout<<qtt<<endl;
-        cout<<cost/qtt<<endl;
-        for (size_t i = 0; i < tb.size; i++){
-            cout<<tb.table[i]<<" ";
-        }
-        cout<<endl;
-        
-    });
 }
