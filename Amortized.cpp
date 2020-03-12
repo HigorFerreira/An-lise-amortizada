@@ -44,7 +44,7 @@ namespace Amortized {
 
             template<std::size_t size>
             void printVector(const int(&vector)[size], 
-                            std::function<void(float, float, DinamicTable&)> printResult, 
+                            std::function<void(int, int, DinamicTable&)> printResult, 
                             std::function<void(int, int, int)> printPartial = 0){
 
                 this->size = 1;
@@ -64,59 +64,30 @@ namespace Amortized {
                     void();
                 }
 
-                printResult((float)totalCost, (float)size, *this);
+                printResult(totalCost, size, *this);
             }
     };
 
     class BinaryCounter{
-        public:
-            int size = 5;
-            int *vector = new int[size];
-
-            void iterate(std::function<void(int)> callback = 0){
-                if(!callback) return;
-
-                for (size_t i = 0; i < this->size; i++){
-                    callback(this->vector[i]);
-                }
-            }
-
-            void iterate(std::function<void(int, int)> callback = 0){
-                if(!callback) return;
-
-                for (size_t i = 0; i < this->size; i++){
-                    callback(this->vector[i], i);
-                }
-            }
-
-            void iterate(std::function<void(int, int, int*)> callback = 0){
-                if(!callback) return;
-
-                for (size_t i = 0; i < this->size; i++){
-                    callback(this->vector[i], i, this->vector);
-                }
-            }
-
-            BinaryCounter(){
-                this->iterate([](int element, int index, int *vector){
-                    vector[index] = 0;
-                });
-            }
-
-            bool isBufferZero(){
-                bool iszero = true;
-                this->iterate([&](int element){
-                    if(!element) iszero = false;
-                });
-                return iszero;
-            }
-
-
     };
 }
 
 int main(){
     using Amortized::DinamicTable;
+    using Amortized::BinaryCounter;
     using std::cout;
     using std::endl;
+    
+    DinamicTable table;
+
+    table.printVector<5>({ 1, 2, 3, 4, 5 }, [](float cost, float qtt, DinamicTable tb){
+        cout<<cost<<endl;
+        cout<<qtt<<endl;
+        cout<<cost/qtt<<endl;
+        for (size_t i = 0; i < tb.size; i++){
+            cout<<tb.table[i]<<" ";
+        }
+        cout<<endl;
+        
+    });
 }
