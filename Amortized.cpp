@@ -47,21 +47,24 @@ namespace Amortized {
                             std::function<void(float, float, DinamicTable&)> printResult, 
                             std::function<void(int, int, int)> printPartial = 0){
 
-                DinamicTable table;
+                this->size = 1;
+                this->pointer = 0;
+                delete []this->table;
+                this->table = new int[this->size];
 
                 int totalCost = 0;
 
                 for (size_t i = 0; i < size; i++){
                     int cost;
-                    cost = table.insert(vector[i]);
+                    cost = this->insert(vector[i]);
                     totalCost += cost;
 
                     printPartial ?
-                    printPartial(vector[i], table.size, cost) :
+                    printPartial(vector[i], this->size, cost) :
                     void();
                 }
 
-                printResult((float)totalCost, (float)size, table);
+                printResult((float)totalCost, (float)size, *this);
             }
     };
 }
@@ -72,12 +75,4 @@ int main(){
     using std::endl;
 
     DinamicTable table;
-
-    table.printVector<6>({ 31, 5, 4, 3, 2, 1 }, [&](float custo, float elementos, DinamicTable tb){
-        cout<<custo<<endl;
-        cout<<elementos<<endl;
-        cout<<custo/elementos<<endl;
-    }, [&](int elemnt, int tableSize, int cost){
-        cout<<"Elemento "<<elemnt<<" Tamanho da tabela "<<tableSize<<" Custo "<<cost<<endl;
-    });
 }
