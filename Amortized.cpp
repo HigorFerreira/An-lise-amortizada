@@ -67,12 +67,32 @@ namespace Amortized {
                 printResult((float)totalCost, (float)size, *this);
             }
     };
+
+    class BinaryCounter{
+        public:
+            int size = 5;
+            int *vector = new int[size];
+
+            void iterate(std::function<void(int, int, int*)> callback = 0){
+                if(!callback) return;
+
+                for (size_t i = 0; i < this->size; i++){
+                    callback(this->vector[i], i, this->vector);
+                }
+            }
+
+            BinaryCounter(){
+                this->iterate([](int element, int index, int *vector){
+                    vector[index] = 0;
+                });
+            }
+
+            
+    };
 }
 
 int main(){
     using Amortized::DinamicTable;
     using std::cout;
     using std::endl;
-
-    DinamicTable table;
 }
