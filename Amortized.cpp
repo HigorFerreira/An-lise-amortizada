@@ -73,6 +73,22 @@ namespace Amortized {
             int size = 5;
             int *vector = new int[size];
 
+            void iterate(std::function<void(int)> callback = 0){
+                if(!callback) return;
+
+                for (size_t i = 0; i < this->size; i++){
+                    callback(this->vector[i]);
+                }
+            }
+
+            void iterate(std::function<void(int, int)> callback = 0){
+                if(!callback) return;
+
+                for (size_t i = 0; i < this->size; i++){
+                    callback(this->vector[i], i);
+                }
+            }
+
             void iterate(std::function<void(int, int, int*)> callback = 0){
                 if(!callback) return;
 
@@ -87,7 +103,15 @@ namespace Amortized {
                 });
             }
 
-            
+            bool isBufferZero(){
+                bool iszero = true;
+                this->iterate([&](int element){
+                    if(!element) iszero = false;
+                });
+                return iszero;
+            }
+
+
     };
 }
 
