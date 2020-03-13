@@ -77,17 +77,4 @@ int main(){
     using Amortized::BinaryCounter;
     using std::cout;
     using std::endl;
-    
-    DinamicTable table;
-
-    table.printVector<5>({ 1, 2, 3, 4, 5 }, [](float cost, float qtt, DinamicTable tb){
-        cout<<cost<<endl;
-        cout<<qtt<<endl;
-        cout<<cost/qtt<<endl;
-        for (size_t i = 0; i < tb.size; i++){
-            cout<<tb.table[i]<<" ";
-        }
-        cout<<endl;
-        
-    });
 }
