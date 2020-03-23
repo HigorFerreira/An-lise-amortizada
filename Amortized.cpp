@@ -73,10 +73,12 @@ namespace Amortized {
     class BinaryCounter{
         public:
 
-            size_t size = 512;
-            char *buffer = new char[size];
+            size_t size;
+            char *buffer;
 
-            BinaryCounter(){
+            BinaryCounter(size_t size = 0){
+                this->size = size ? size : 512;
+                this->buffer = new char[this->size];
                 for (size_t i = 0; i < this->size; i++){
                     this->buffer[i] = '0';
                 }
@@ -98,16 +100,6 @@ namespace Amortized {
 
                 return cost;
             }
-
-            /*
-            void print(int qtt = -1){
-                size_t iterations = qtt < 0 ? this->size - 1 : this->size - qtt - 1;
-                for (size_t i = 511; i > -1; i--){
-                    std::cout<<this->buffer[i];
-                }
-            }
-            */
-
     };
 }
 
@@ -117,5 +109,27 @@ int main(){
     using std::cout;
     using std::endl;
 
-    BinaryCounter counter;
+    /**
+     * ESTE TRABALHO SE REFERE AO CONTADOR BINÁRIO
+     * Alunos:
+     *      - Higor Ferreira Alves Santos
+     *      - Laís Pereira Felipe
+     * 
+     * O que será desenvolvido
+     *      - 1.	A aula de hoje é dedicada a implementação do algoritmo CONTADOR BINÁRIO, desenvolvido em sala.
+     *      - 2.	Este algoritmo deverá ser implementado em C++ pelos alunos, portanto não haverá aula teórica.
+     *      - 3.	O aluno deverá executar este algoritmo para estimar o custo amortizado, conforme mostrado em sala em um exemplo com um vetor de nove posições.
+     *      - 4.	Deverão ser executados para 10 adições e mostrado o custo de cada execução.
+     *      - 5.	Ao final, o custo amortizado, custo médio, deverá ser calculado.
+     * */
+
+    BinaryCounter counter(9);
+
+    int totalCost = 0, additions = 10;
+    for(int i = 0; i < additions; i++){
+        int partialCost = counter.increment();
+        totalCost += partialCost;
+        cout<<"Adicao "<<i+1<<" ------CUSTO------> "<<partialCost<<endl;
+    }
+    cout<<"CUSTO AMORTIZADO: "<<(double)totalCost/additions<<endl;
 }
