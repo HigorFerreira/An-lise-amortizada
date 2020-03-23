@@ -1,4 +1,5 @@
 #include<iostream>
+#include<string>
 #include<functional>
 
 
@@ -16,7 +17,8 @@ namespace Amortized {
                     callback(table[i], (int)i);
                 }                
             }
-
+            
+        public:
             int insert(int value){
                 if(pointer == size){
                     size = size*2;
@@ -69,6 +71,43 @@ namespace Amortized {
     };
 
     class BinaryCounter{
+        public:
+
+            size_t size = 512;
+            char *buffer = new char[size];
+
+            BinaryCounter(){
+                for (size_t i = 0; i < this->size; i++){
+                    this->buffer[i] = '0';
+                }
+            }            
+
+        public:
+            unsigned int increment(){
+                unsigned int cost = 0, i = 0;
+
+                while( i < this->size && this->buffer[i] == '1' ){
+                    this->buffer[i] = '0';
+                    cost++;
+                    i++;
+                }
+                if( i < this->size ){
+                    this->buffer[i] = '1';
+                    cost++;
+                }
+
+                return cost;
+            }
+
+            /*
+            void print(int qtt = -1){
+                size_t iterations = qtt < 0 ? this->size - 1 : this->size - qtt - 1;
+                for (size_t i = 511; i > -1; i--){
+                    std::cout<<this->buffer[i];
+                }
+            }
+            */
+
     };
 }
 
@@ -77,4 +116,6 @@ int main(){
     using Amortized::BinaryCounter;
     using std::cout;
     using std::endl;
+
+    BinaryCounter counter;
 }
