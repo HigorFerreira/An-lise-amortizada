@@ -47,7 +47,7 @@ namespace Amortized {
             template<std::size_t size>
             void printVector(const int(&vector)[size], 
                             std::function<void(int, int, DinamicTable&)> printResult, 
-                            std::function<void(int, int, int)> printPartial = 0){
+                            std::function<void(int, int, int, DinamicTable&)> printPartial = 0){
 
                 this->size = 1;
                 this->pointer = 0;
@@ -62,7 +62,7 @@ namespace Amortized {
                     totalCost += cost;
 
                     printPartial ?
-                    printPartial(vector[i], this->size, cost) :
+                    printPartial(vector[i], this->size, cost, *this) :
                     void();
                 }
 
@@ -116,20 +116,25 @@ int main(){
      *      - Laís Pereira Felipe
      * 
      * O que será desenvolvido
-     *      - 1.	A aula de hoje é dedicada a implementação do algoritmo CONTADOR BINÁRIO, desenvolvido em sala.
+     *      - 1.	A aula de hoje é dedicada a implementação do algoritmo TABELAS DINÂMICAS, desenvolvido em sala.
      *      - 2.	Este algoritmo deverá ser implementado em C++ pelos alunos, portanto não haverá aula teórica.
-     *      - 3.	O aluno deverá executar este algoritmo para estimar o custo amortizado, conforme mostrado em sala em um exemplo com um vetor de nove posições.
-     *      - 4.	Deverão ser executados para 10 adições e mostrado o custo de cada execução.
+     *      - 3.	O aluno deverá executar este algoritmo para estimar o custo amortizado, conforme mostrado em sala com 10 (dez inserções).
+     *      - 4.	Deverão ser executados para 10 inserções e mostrado o custo de cada execução, imprimindo a tabela e os valores do custo, a cada inserção.
      *      - 5.	Ao final, o custo amortizado, custo médio, deverá ser calculado.
      * */
 
-    BinaryCounter counter(9);
+    DinamicTable table;
 
-    int totalCost = 0, additions = 10;
-    for(int i = 0; i < additions; i++){
-        int partialCost = counter.increment();
-        totalCost += partialCost;
-        cout<<"Adicao "<<i+1<<" ------CUSTO------> "<<partialCost<<endl;
-    }
-    cout<<"CUSTO AMORTIZADO: "<<(double)totalCost/additions<<endl;
+    table.printVector<10>({ 55, 10, 20, 12, 15, 24, 15, 18, 18, 10 },
+        [](int totalCost, int tableSize, DinamicTable table){
+            cout<<"\nCUSTO AMORTIZADO: "<<(double)totalCost/tableSize<<endl<<endl;
+        },
+        [](int insertedElement, int size, int cost, DinamicTable table){
+            cout<<"ELEMENTO INSERIDO: "<<insertedElement<<"    =====   CUSTO: "<<cost<<"   [ ";
+            for (size_t i = 0; i < size; i++){
+                cout<<table.table[i]<<", ";
+            }
+            cout<<"]\n";
+        }
+    );
 }
