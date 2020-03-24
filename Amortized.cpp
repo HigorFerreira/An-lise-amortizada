@@ -110,7 +110,7 @@ int main(){
     using std::endl;
 
     /**
-     * ESTE TRABALHO SE REFERE AO CONTADOR BINÁRIO
+     * ESTE TRABALHO SE REFERE À TABELA DINÂMICA
      * Alunos:
      *      - Higor Ferreira Alves Santos
      *      - Laís Pereira Felipe
